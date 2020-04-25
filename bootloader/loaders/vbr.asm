@@ -25,6 +25,16 @@ start:
     NOP
 
 clear_prefetch_queue:
+	JMP to_long_mode
 
 [bits 32]
+%include "modules-32bit/abilities.asm"
+%include "modules-32bit/pages.asm"
+
+to_long_mode:
+	CALL cpuid_ok
+	CALL long_mode_ok
+	CALL init_pages
+
+NO_CPUID_ERROR DB 10, 'CPUID is not available', 13, 0
 JMP $
