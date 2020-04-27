@@ -1,4 +1,9 @@
 init_pages:
+	PUSH edi
+	PUSH eax
+	PUSH ecx
+	PUSH ebx
+
 	MOV edi, 0x1000			; start the tables at this mem location
 	MOV cr3, edi			; cr3 reg holds the location of page tables
 
@@ -25,10 +30,23 @@ init_pages:
 	ADD edi, 8
 	LOOP init_pages.make_entry
 
-.enable_paging:				; enable the pagin bit in control register 4
+	; enable PAE paging bit in control register 4, physical addr extension
 	MOV eax, cr4
 	OR eax, 1 << 5
 	MOV cr4, eax
 
+	POP ebx
+	POP ecx
+	POP eax
+	POP edi
+	RET
 
+enable_paging:
+	PUSH eax
+	
+	MOV eax, cr0
+	OR eax, 1 << 31
+	MOV cr0, eax
+
+	POP eax
 	RET

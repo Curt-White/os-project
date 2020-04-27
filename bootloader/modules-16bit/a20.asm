@@ -147,4 +147,4 @@ exit:
 	POPF
 	RET
 
-A20_ERROR DB 'Unable To Enable The A20 Line', 13, 0
+	A20_ERROR DB 'Unable To Enable The A20 Line', 13, 0

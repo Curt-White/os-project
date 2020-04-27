@@ -19,10 +19,11 @@ setup:
 	STI
 
 	JMP 0x0000:check
-check:
+check:	
 	MOV BYTE [DRIVEID], dl	; Save the drive id from dl register
 	MOV cx, PTBL_LEN
 	MOV bx, DSKPRT1
+
 check_loop:
 	CMP BYTE [bx], 0x80		; check if the active partition bit is set
 	JZ load
@@ -53,7 +54,7 @@ load:
 	JNZ error
 
 	MOV ah, 0x02	; function number, read sectors
-	MOV al, 0x01	; number of sectors to read
+	MOV al, 0x02	; number of sectors to read
 	MOV ch, 0x00	; cylinder number
 	MOV dh, 0x00	; read/write head number
 	MOV cl, 0x02	; sector
@@ -63,7 +64,6 @@ load:
 
 	JC error	; cary flag is set if disk error
 	JMP 0x0000:0x7C00
-
 	JMP end
 error:
 	MOV si, DISKERR
@@ -71,6 +71,8 @@ error:
 	JMP poll_restart
 
 end:
+	%include "modules-16bit/print.asm"
+
 	SUCCESS DB 10, 'This Has Succeeded', 13, 0
 	FAILED 	DB 10, 'No Active Partitions Available', 13, 0
 	DISKERR DB 10, 'A Disk Error Occured', 13, 0
@@ -78,7 +80,6 @@ end:
 	DRIVEID DB 0
 	ACTIVPT DB 0 
 
-	%include "modules-16bit/print.asm"
 	times 440-($-$$) DB 0	; Pad remainder of boot sector with 0s
 	
 	DISKSIG DD 0
