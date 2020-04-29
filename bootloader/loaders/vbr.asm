@@ -51,10 +51,22 @@ to_long_mode:
 	CALL enter_long
 
 [bits 64]
+	%include "modules-64bit/disk.asm"
 load_kernel:
-	mov rax, 0x2f592f412f4b2f4f
-    mov qword [0xb8000], rax
-    hlt
+	MOV ax, gdt_64.data
+    MOV ds, ax
+    MOV es, ax
+    MOV fs, ax
+    MOV gs, ax
+	
+	; MOV rax, 0x2f592f412f4b2f4f
+    ; MOV qword [0xb8000], rax
+    ; HLT
 
+	MOV eax, 0x05
+	MOV cl, 1
+	MOV rdi, 0x100000
+	CALL disk_read
+
+	JMP 0x100000
 	NO_CPUID_ERROR DB 10, 'CPUID is not available', 13, 0
-	JMP $
