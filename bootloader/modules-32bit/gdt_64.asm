@@ -1,7 +1,3 @@
-enter_long:
-	LGDT [gdt_64.pointer]
-	JMP gdt_64.code:load_kernel
-
 gdt_64:                 
 .null: equ $ - gdt_64
     DW 0xFFFF           

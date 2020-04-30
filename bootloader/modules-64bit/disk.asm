@@ -1,5 +1,4 @@
 %define PRIM_ATA_IO_BASE_PORT 0x01F0
-
 %define ATA_READ_CMD 0x20
 
 disk_read:
@@ -58,7 +57,10 @@ disk_read:
 	POP rdi
 	POP rdx
 	POP rcx
+	POP rbx
 	POP rax
 	POPFQ
+
+
 	RET
 

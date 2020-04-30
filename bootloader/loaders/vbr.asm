@@ -48,20 +48,20 @@ to_long_mode:
 	WRMSR
 
 	CALL enable_paging
-	CALL enter_long
+	LGDT [gdt_64.pointer]
+
+	JMP gdt_64.code:load_kernel
 
 [bits 64]
 	%include "modules-64bit/disk.asm"
 load_kernel:
-	MOV ax, gdt_64.data
-    MOV ds, ax
-    MOV es, ax
-    MOV fs, ax
-    MOV gs, ax
-	
-	; MOV rax, 0x2f592f412f4b2f4f
-    ; MOV qword [0xb8000], rax
-    ; HLT
+	CLI
+    mov ax, gdt_64.data
+    mov ss, ax
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
 	MOV eax, 0x05
 	MOV cl, 1
