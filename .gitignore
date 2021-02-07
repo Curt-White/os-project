@@ -2,4 +2,4 @@ bin
 *.img
 *.log
 *.lock
-*.o
+.idea
