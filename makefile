@@ -1,3 +1,5 @@
+export BUILD_DIR := $(shell pwd)
+
 run: local
 	qemu-system-x86_64 -drive format=raw,file=drive.img -D ./qemu.log -d cpu_reset
 
@@ -17,11 +19,11 @@ clean:
 	$(MAKE) -C ./kernel clean 
 	rm -rf drive.img
 
-subdir:
+all:
 	$(MAKE) -C ./bootloader build 
-	$(MAKE) -C ./kernel build 
+	$(MAKE) -C ./kernel 
 
-build: subdir
+build: all
 	dd if=/dev/zero of=drive.img bs=512 count=200
 	dd if=./bootloader/bin/mbr.bin of=drive.img seek=0 count=1 conv=notrunc
 	dd if=./bootloader/bin/vbr.bin of=drive.img seek=1 count=2 conv=notrunc

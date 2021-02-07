@@ -1,5 +1,7 @@
-FROM mugen/ubuntu-build-essential
-RUN apt-get install nasm
+FROM ubuntu:latest
+RUN apt-get update -y
+RUN apt-get install -y make nasm g++
+
 WORKDIR /src
 COPY . .
 

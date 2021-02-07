@@ -17,9 +17,9 @@ cpuid_ok:
 	MOV eax, 1
 	JMP cpuid_ok.exit
 
-.not_avail
+.not_avail:
 	MOV eax, 0
-.exit
+.exit:
 	PUSH edx
 	POPFD
 	POP edx
@@ -38,7 +38,7 @@ long_mode_ok:
 	JZ long_mode_ok.not_avail
 
 	MOV al, 1
-.not_avail
+.not_avail:
 	MOV al, 0
-.exit
+.exit:
 	RET
